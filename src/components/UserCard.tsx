@@ -1,5 +1,5 @@
 import { SplitwiseUser } from "@/types/splitwise";
-import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
+import { Card, CardTitle, CardContent } from "./ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 

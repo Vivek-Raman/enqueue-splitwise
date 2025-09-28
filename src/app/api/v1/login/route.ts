@@ -1,4 +1,4 @@
-import { Client, OAuth2User } from "splitwise-ts";
+import { OAuth2User } from "splitwise-ts";
 
 export async function POST(req: Request) {
   // const credentials = {
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     clientSecret: request.clientSecret,
   };
   const user = new OAuth2User(credentials);
-  const acccessToken = await user.requestAccessToken();
+  await user.requestAccessToken();
 
   const response = Response.json({ success: true });
 
