@@ -1,6 +1,6 @@
 "use client";
 
-import GroupSelector from "@/components/GroupSelector";
+import EnqueueConfig from "@/components/EnqueueConfig";
 import SplitwiseLogin from "@/components/SplitwiseLogin";
 import UserCard from "@/components/UserCard";
 import { useSplitwiseUser } from "@/hooks";
@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4">
       <UserCard user={user} />
-      <GroupSelector />
+      <EnqueueConfig />
     </div>
   );
 }

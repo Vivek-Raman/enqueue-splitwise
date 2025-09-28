@@ -2,6 +2,7 @@ import { getAuthUserFromRequest } from "@/lib/auth";
 import { NextRequest } from "next/server";
 import { Client } from "splitwise-ts";
 
+// list groups of the authenticated user
 export async function GET(req: NextRequest) {
   let user;
   try {
@@ -18,6 +19,9 @@ export async function GET(req: NextRequest) {
 
   const client = new Client(user);
 
-  const groups = await client.groups.getGroups();
-  return Response.json({ success: true, ...groups });
+  const response = await client.groups.getGroups();
+  const groups = response.groups;
+  groups?.sort((a, b) => a.updated_at!.localeCompare(b.updated_at!)).reverse();
+
+  return Response.json({ success: true, groups });
 }

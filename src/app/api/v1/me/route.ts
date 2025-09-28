@@ -1,6 +1,6 @@
 import { getAuthUserFromRequest } from "@/lib/auth";
 import { NextRequest } from "next/server";
-import { Client, OAuth2User } from "splitwise-ts";
+import { Client } from "splitwise-ts";
 
 export async function GET(req: NextRequest) {
   let user;

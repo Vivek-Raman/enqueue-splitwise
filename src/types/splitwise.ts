@@ -30,3 +30,13 @@ export interface SplitwiseApiResponse<T> {
   user?: T;
   error?: string;
 }
+
+export interface Group {
+  id: string;
+  name: string;
+  avatar?: {
+    small?: string;
+    medium?: string;
+    large?: string;
+  };
+}

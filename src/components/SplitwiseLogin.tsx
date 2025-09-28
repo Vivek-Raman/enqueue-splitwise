@@ -29,7 +29,7 @@ export default function SplitwiseLogin() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">Splitwise API</CardTitle>
+        <CardTitle className="text-lg">Splitwise API</CardTitle>
       </CardHeader>
 
       <CardContent>
