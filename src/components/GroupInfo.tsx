@@ -1,13 +1,16 @@
+"use client";
+
 import { Group } from "@/types/splitwise";
 import { useEffect, useState } from "react";
 import { Label } from "./ui/label";
+import { ErrorProps } from "@/types/error-props";
 
 interface GroupInfoProps {
   group: Group;
 }
 
-export default function GroupInfo(props: GroupInfoProps) {
-  const { group } = props;
+export default function GroupInfo(props: GroupInfoProps & ErrorProps) {
+  const { group, setError } = props;
   const [expenseCount, setExpenseCount] = useState<string>("");
 
   useEffect(() => {
@@ -15,7 +18,7 @@ export default function GroupInfo(props: GroupInfoProps) {
       const res = await fetch(`/api/v1/groups/${group.id}`);
       const data = await res.json();
       if (!data.success) {
-        console.error("Failed to fetch expense info");
+        setError("Failed to fetch group info: " + data.error);
         return;
       }
       const noun = data.expenses.length === 1 ? "expense" : "expenses";

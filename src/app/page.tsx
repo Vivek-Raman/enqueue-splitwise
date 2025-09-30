@@ -2,10 +2,11 @@
 
 import EnqueueConfig from "@/components/EnqueueConfig";
 import UserCard from "@/components/UserCard";
-import { useError, useSplitwiseUser } from "@/hooks";
+import { useSplitwiseUser } from "@/hooks";
+import { useState } from "react";
 
 export default function Home() {
-  const { error } = useError();
+  const [error, setError] = useState<string | null>(null);
   const { user } = useSplitwiseUser();
 
   return (
@@ -13,8 +14,8 @@ export default function Home() {
       {error && <div className="text-red-500">Error: {error}</div>}
       {user && (
         <>
-          <UserCard />
-          <EnqueueConfig />
+          <UserCard setError={setError} />
+          <EnqueueConfig setError={setError} />
         </>
       )}
     </div>

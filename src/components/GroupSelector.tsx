@@ -1,7 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useMediaQuery } from "@/hooks";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
@@ -9,35 +8,32 @@ import { Drawer, DrawerContent, DrawerTrigger, DrawerTitle } from "@/components/
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Group } from "@/types/splitwise";
+import { ErrorProps } from "@/types/error-props";
 
 interface GroupSelectorProps {
   selectedGroup: Group | null;
   setSelectedGroup: (group: Group | null) => void;
 }
 
-export default function GroupSelector(props: GroupSelectorProps) {
+export default function GroupSelector(props: GroupSelectorProps & ErrorProps) {
   const [groups, setGroups] = useState<Group[]>([]);
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const { selectedGroup, setSelectedGroup } = props;
+  const { selectedGroup, setSelectedGroup, setError } = props;
 
-  const fetchGroups = async () => {
-    try {
-      const response = await fetch("/api/v1/groups");
-      const data = await response.json();
-      if (data.success) {
-        setGroups(data.groups);
-      } else {
-        throw new Error(data.error);
-      }
-    } catch (error) {
-      console.error("Error fetching groups:", error);
+  const fetchGroups = useCallback(async () => {
+    const response = await fetch("/api/v1/groups").then((res) => res.json());
+    if (!response.success) {
+      setError("Failed to fetch groups: " + response.error);
+      return;
     }
-  };
+
+    setGroups(response.groups);
+  }, [setError]);
 
   useEffect(() => {
     fetchGroups();
-  }, []);
+  }, [fetchGroups]);
 
   if (isDesktop) {
     return (

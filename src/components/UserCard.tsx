@@ -1,12 +1,12 @@
-import { SplitwiseUser } from "@/types/splitwise";
 import { Card, CardTitle, CardContent, CardHeader } from "./ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { useSplitwiseUser } from "@/hooks";
 import { FormEvent } from "react";
 import { Input } from "./ui/input";
+import { ErrorProps } from "@/types/error-props";
 
-export default function UserCard() {
+export default function UserCard({ setError }: {} & ErrorProps) {
   const { loading, user, refetch } = useSplitwiseUser();
 
   const doLogin = async (e: FormEvent<HTMLFormElement>) => {
@@ -21,9 +21,12 @@ export default function UserCard() {
       body: JSON.stringify({ clientKey, clientSecret }),
     }).then((res) => res.json());
 
-    if (response.success) {
-      refetch();
+    if (!response.success) {
+      setError(response.error);
+      return;
     }
+
+    refetch();
   };
 
   if (loading) {
