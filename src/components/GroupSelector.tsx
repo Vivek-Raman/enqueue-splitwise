@@ -8,18 +8,19 @@ import { Drawer, DrawerContent, DrawerTrigger, DrawerTitle } from "@/components/
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Group } from "@/types/splitwise";
-import { ErrorProps } from "@/types/error-props";
+import { useError } from "@/contexts/ErrorContext";
 
 interface GroupSelectorProps {
   selectedGroup: Group | null;
   setSelectedGroup: (group: Group | null) => void;
 }
 
-export default function GroupSelector(props: GroupSelectorProps & ErrorProps) {
+export default function GroupSelector(props: GroupSelectorProps) {
   const [groups, setGroups] = useState<Group[]>([]);
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const { selectedGroup, setSelectedGroup, setError } = props;
+  const { selectedGroup, setSelectedGroup } = props;
+  const { setError } = useError();
 
   const fetchGroups = useCallback(async () => {
     setError(null);

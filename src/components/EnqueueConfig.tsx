@@ -1,6 +1,5 @@
 "use client";
 
-import { ErrorProps } from "@/types/error-props";
 import { Group } from "@/types/splitwise";
 import { FormEvent, useCallback, useState } from "react";
 import GroupInfo from "./GroupInfo";
@@ -10,10 +9,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { toast } from "sonner";
+import { useError } from "@/contexts/ErrorContext";
 
-export default function EnqueueConfig({ setError }: {} & ErrorProps) {
+export default function EnqueueConfig() {
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
   const [buttonActive, setButtonActive] = useState<boolean>(true);
+  const { setError } = useError();
 
   const doSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -56,8 +57,8 @@ export default function EnqueueConfig({ setError }: {} & ErrorProps) {
         >
           <div className="flex flex-col gap-1">
             <Label>Group to use</Label>
-            <GroupSelector selectedGroup={selectedGroup} setSelectedGroup={setSelectedGroup} setError={setError} />
-            {selectedGroup && <GroupInfo group={selectedGroup} setError={setError} />}
+            <GroupSelector selectedGroup={selectedGroup} setSelectedGroup={setSelectedGroup} />
+            {selectedGroup && <GroupInfo group={selectedGroup} />}
           </div>
           <div className="flex flex-col gap-1">
             <Label htmlFor="entry-count">Number of entries</Label>

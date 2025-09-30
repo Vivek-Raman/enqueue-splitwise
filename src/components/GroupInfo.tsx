@@ -3,15 +3,16 @@
 import { Group } from "@/types/splitwise";
 import { useEffect, useState } from "react";
 import { Label } from "./ui/label";
-import { ErrorProps } from "@/types/error-props";
+import { useError } from "@/contexts/ErrorContext";
 
 interface GroupInfoProps {
   group: Group;
 }
 
-export default function GroupInfo(props: GroupInfoProps & ErrorProps) {
-  const { group, setError } = props;
+export default function GroupInfo(props: GroupInfoProps) {
+  const { group } = props;
   const [expenseCount, setExpenseCount] = useState<string>("");
+  const { setError } = useError();
 
   useEffect(() => {
     const fetchExpenseInfo = async () => {

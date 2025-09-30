@@ -4,10 +4,11 @@ import { Button } from "./ui/button";
 import { useSplitwiseUser } from "@/hooks";
 import { FormEvent, useCallback } from "react";
 import { Input } from "./ui/input";
-import { ErrorProps } from "@/types/error-props";
+import { useError } from "@/contexts/ErrorContext";
 
-export default function UserCard({ setError }: {} & ErrorProps) {
+export default function UserCard() {
   const { loading, user, refetch } = useSplitwiseUser();
+  const { setError } = useError();
 
   const doLogin = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
