@@ -35,9 +35,18 @@ export async function POST(req: NextRequest) {
     );
   }
   const client = new Client(user);
-  client.expenses.createExpense({
-    group_id: selectedGroup,
-  });
+
+  for (let i = 0; i < entryCount; ++i) {
+    const expense = {
+      cost: "0.01",
+      description: "Placeholder by enqueue-splitwise.vivekraman.dev",
+      split_equally: "true",
+    };
+    await client.expenses.createExpense({
+      group_id: selectedGroup,
+      ...expense,
+    });
+  }
 
   return Response.json({ success: true });
 }
@@ -47,3 +56,4 @@ function validateRequest(ensureTrue: boolean, errorMessage: string) {
     throw new Error(errorMessage);
   }
 }
+0.01;
