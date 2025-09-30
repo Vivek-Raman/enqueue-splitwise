@@ -1,5 +1,5 @@
 import { Group } from "@/types/splitwise";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Label } from "./ui/label";
 
 interface GroupInfoProps {

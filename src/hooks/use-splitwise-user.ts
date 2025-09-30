@@ -2,18 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { SplitwiseUser, SplitwiseApiResponse } from "../types/splitwise";
+import { useError } from "@/hooks";
 
 interface UseSplitwiseUserReturn {
   user: SplitwiseUser | null;
   loading: boolean;
-  error: string | null;
   refetch: () => Promise<void>;
 }
 
 export function useSplitwiseUser(): UseSplitwiseUserReturn {
   const [user, setUser] = useState<SplitwiseUser | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { setError } = useError();
 
   const fetchUser = async () => {
     try {
@@ -44,7 +44,6 @@ export function useSplitwiseUser(): UseSplitwiseUserReturn {
   return {
     user,
     loading,
-    error,
     refetch: fetchUser,
   };
 }
