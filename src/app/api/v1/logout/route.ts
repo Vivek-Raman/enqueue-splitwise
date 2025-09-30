@@ -1,4 +1,4 @@
-export async function POST() {
+export async function GET() {
   const response = Response.json({ success: true });
   response.headers.set("Set-Cookie", `credentials=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0`);
   return response;

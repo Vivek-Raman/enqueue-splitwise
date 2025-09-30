@@ -1,3 +1,3 @@
 export type ErrorProps = {
-  setError: (error: string) => void;
+  setError: (error: string | null) => void;
 };

@@ -2,32 +2,46 @@ import { Card, CardTitle, CardContent, CardHeader } from "./ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { useSplitwiseUser } from "@/hooks";
-import { FormEvent } from "react";
+import { FormEvent, useCallback } from "react";
 import { Input } from "./ui/input";
 import { ErrorProps } from "@/types/error-props";
 
 export default function UserCard({ setError }: {} & ErrorProps) {
   const { loading, user, refetch } = useSplitwiseUser();
 
-  const doLogin = async (e: FormEvent<HTMLFormElement>) => {
-    const formData = new FormData(e.target as HTMLFormElement);
-    const clientKey = formData.get("clientKey");
-    const clientSecret = formData.get("clientSecret");
-    const response = await fetch("/api/v1/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ clientKey, clientSecret }),
-    }).then((res) => res.json());
+  const doLogin = useCallback(
+    async (e: FormEvent<HTMLFormElement>) => {
+      setError(null);
+      const formData = new FormData(e.target as HTMLFormElement);
+      const clientKey = formData.get("clientKey");
+      const clientSecret = formData.get("clientSecret");
+      const response = await fetch("/api/v1/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ clientKey, clientSecret }),
+      }).then((res) => res.json());
 
+      if (!response.success) {
+        setError(response.error);
+        return;
+      }
+
+      await refetch();
+    },
+    [refetch, setError],
+  );
+
+  const doLogout = useCallback(async () => {
+    setError(null);
+    const response = await fetch("/api/v1/logout").then((res) => res.json());
     if (!response.success) {
       setError(response.error);
-      return;
     }
 
     refetch();
-  };
+  }, [refetch, setError]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -78,7 +92,9 @@ export default function UserCard({ setError }: {} & ErrorProps) {
               </AvatarFallback>
             </Avatar>
           </CardTitle>
-          <Button variant="outline">Logout</Button>
+          <Button variant="outline" onClick={doLogout}>
+            Logout
+          </Button>
         </div>
       </CardContent>
     </Card>

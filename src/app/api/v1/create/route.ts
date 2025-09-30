@@ -21,8 +21,8 @@ export async function POST(req: NextRequest) {
   try {
     validateRequest(!!selectedGroup, "No group selected.");
     validateRequest(!!entryCount, "No entry count specified.");
-    validateRequest(entryCount > 50, "Max entry count capped at 50.");
-    validateRequest(entryCount < 1, "Min entry count capped at 1.");
+    validateRequest(entryCount <= 50, "Max entry count capped at 50.");
+    validateRequest(entryCount >= 1, "Min entry count capped at 1.");
   } catch (error) {
     return Response.json(
       {
@@ -34,18 +34,21 @@ export async function POST(req: NextRequest) {
       },
     );
   }
-  const client = new Client(user);
 
-  for (let i = 0; i < entryCount; ++i) {
+  const client = new Client(user);
+  for (let i = 1; i <= entryCount; ++i) {
     const expense = {
       cost: "0.01",
       description: "Placeholder by enqueue-splitwise.vivekraman.dev",
       split_equally: "true",
     };
+    console.debug(`[${selectedGroup}] Creating expense ${i}/${entryCount}`);
     await client.expenses.createExpense({
       group_id: selectedGroup,
       ...expense,
     });
+    console.debug(`[${selectedGroup}]  Created expense ${i}/${entryCount}`);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
   return Response.json({ success: true });
@@ -56,4 +59,3 @@ function validateRequest(ensureTrue: boolean, errorMessage: string) {
     throw new Error(errorMessage);
   }
 }
-0.01;

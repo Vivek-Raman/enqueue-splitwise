@@ -22,6 +22,7 @@ export default function GroupSelector(props: GroupSelectorProps & ErrorProps) {
   const { selectedGroup, setSelectedGroup, setError } = props;
 
   const fetchGroups = useCallback(async () => {
+    setError(null);
     const response = await fetch("/api/v1/groups").then((res) => res.json());
     if (!response.success) {
       setError("Failed to fetch groups: " + response.error);

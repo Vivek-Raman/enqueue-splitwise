@@ -1,14 +1,15 @@
 "use client";
 
+import { ErrorProps } from "@/types/error-props";
 import { Group } from "@/types/splitwise";
 import { FormEvent, useCallback, useState } from "react";
+import GroupInfo from "./GroupInfo";
 import GroupSelector from "./GroupSelector";
+import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Button } from "./ui/button";
-import GroupInfo from "./GroupInfo";
-import { ErrorProps } from "@/types/error-props";
+import { toast } from "sonner";
 
 export default function EnqueueConfig({ setError }: {} & ErrorProps) {
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
@@ -28,8 +29,14 @@ export default function EnqueueConfig({ setError }: {} & ErrorProps) {
       }).then((res) => res.json());
       if (!response.success) {
         setError("Failed to create expenses: " + response.error);
+        setButtonActive(true);
         return;
       }
+
+      toast(`Successfully created expenses`, {
+        description: `${entryCount} expenses created in group "${selectedGroup?.name}"`,
+      });
+      setButtonActive(true);
     },
     [selectedGroup, setButtonActive, setError],
   );
@@ -58,7 +65,7 @@ export default function EnqueueConfig({ setError }: {} & ErrorProps) {
           </div>
           <div>Make sure to select a separate group to create blank expenses.</div>
           <Button type="submit" disabled={!buttonActive}>
-            Create
+            {buttonActive ? "Create" : "Creating..."}
           </Button>
         </form>
       </CardContent>

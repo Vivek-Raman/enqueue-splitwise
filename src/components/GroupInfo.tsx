@@ -26,7 +26,7 @@ export default function GroupInfo(props: GroupInfoProps & ErrorProps) {
     };
 
     fetchExpenseInfo();
-  }, [group]);
+  }, [group, setError]);
 
   return <Label>{expenseCount}</Label>;
 }

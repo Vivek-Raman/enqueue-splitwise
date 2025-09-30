@@ -11,13 +11,10 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-      {error && <div className="text-red-500">Error: {error}</div>}
-      {user && (
-        <>
-          <UserCard setError={setError} />
-          <EnqueueConfig setError={setError} />
-        </>
-      )}
+      {error && <div className="text-red-500 text-center w-md wrap-break-word">{error}</div>}
+
+      <UserCard setError={setError} />
+      {user && <EnqueueConfig setError={setError} />}
     </div>
   );
 }
