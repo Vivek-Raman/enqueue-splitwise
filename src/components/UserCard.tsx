@@ -61,11 +61,11 @@ export default function UserCard() {
           >
             <div>
               <label htmlFor="clientKey">Client Key</label>
-              <Input type="text" id="clientKey" name="clientKey" required />
+              <Input type="text" id="clientKey" name="clientKey" autoComplete="username" required />
             </div>
             <div className="mb-6">
               <label htmlFor="clientSecret">Client Secret</label>
-              <Input type="password" id="clientSecret" name="clientSecret" required />
+              <Input type="password" id="clientSecret" name="clientSecret" autoComplete="current-password" required />
             </div>
             <Button type="submit">Login</Button>
           </form>
