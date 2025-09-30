@@ -4,15 +4,13 @@ import { Button } from "./ui/button";
 import { useUser } from "@/contexts/UserContext";
 import { FormEvent, useCallback } from "react";
 import { Input } from "./ui/input";
-import { useError } from "@/contexts/ErrorContext";
+import { toast } from "sonner";
 
 export default function UserCard() {
   const { loading, user, refetch } = useUser();
-  const { setError } = useError();
 
   const doLogin = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
-      setError(null);
       const formData = new FormData(e.target as HTMLFormElement);
       const clientKey = formData.get("clientKey");
       const clientSecret = formData.get("clientSecret");
@@ -25,24 +23,23 @@ export default function UserCard() {
       }).then((res) => res.json());
 
       if (!response.success) {
-        setError(response.error);
+        toast.error(response.error);
         return;
       }
 
       await refetch();
     },
-    [refetch, setError],
+    [refetch],
   );
 
   const doLogout = useCallback(async () => {
-    setError(null);
     const response = await fetch("/api/v1/logout").then((res) => res.json());
     if (!response.success) {
-      setError(response.error);
+      toast.error(response.error);
     }
 
     refetch();
-  }, [refetch, setError]);
+  }, [refetch]);
 
   if (loading) {
     return <div>Loading...</div>;

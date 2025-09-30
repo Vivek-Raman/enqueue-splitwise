@@ -9,12 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { toast } from "sonner";
-import { useError } from "@/contexts/ErrorContext";
 
 export default function EnqueueConfig() {
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
   const [buttonActive, setButtonActive] = useState<boolean>(true);
-  const { setError } = useError();
 
   const doSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -29,7 +27,7 @@ export default function EnqueueConfig() {
         }),
       }).then((res) => res.json());
       if (!response.success) {
-        setError("Failed to create expenses: " + response.error);
+        toast.error("Failed to create expenses: " + response.error);
         setButtonActive(true);
         return;
       }
@@ -39,7 +37,7 @@ export default function EnqueueConfig() {
       });
       setButtonActive(true);
     },
-    [selectedGroup, setButtonActive, setError],
+    [selectedGroup, setButtonActive],
   );
 
   return (

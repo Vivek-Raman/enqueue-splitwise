@@ -8,7 +8,7 @@ import { Drawer, DrawerContent, DrawerTrigger, DrawerTitle } from "@/components/
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Group } from "@/types/splitwise";
-import { useError } from "@/contexts/ErrorContext";
+import { toast } from "sonner";
 
 interface GroupSelectorProps {
   selectedGroup: Group | null;
@@ -20,18 +20,16 @@ export default function GroupSelector(props: GroupSelectorProps) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { selectedGroup, setSelectedGroup } = props;
-  const { setError } = useError();
 
   const fetchGroups = useCallback(async () => {
-    setError(null);
     const response = await fetch("/api/v1/groups").then((res) => res.json());
     if (!response.success) {
-      setError("Failed to fetch groups: " + response.error);
+      toast.error("Failed to fetch groups: " + response.error);
       return;
     }
 
     setGroups(response.groups);
-  }, [setError]);
+  }, []);
 
   useEffect(() => {
     fetchGroups();
