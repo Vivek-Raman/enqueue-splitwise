@@ -22,6 +22,7 @@ export function UserProvider({ children }: UserProviderProps) {
   const fetchUser = async () => {
     try {
       setLoading(true);
+      setUser(null);
 
       const response = await fetch("/api/v1/me");
       const data: SplitwiseApiResponse<SplitwiseUser> = await response.json();
@@ -43,11 +44,7 @@ export function UserProvider({ children }: UserProviderProps) {
     fetchUser();
   }, []);
 
-  return (
-    <UserContext.Provider value={{ user, loading, refetch: fetchUser }}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={{ user, loading, refetch: fetchUser }}>{children}</UserContext.Provider>;
 }
 
 export function useUser() {
