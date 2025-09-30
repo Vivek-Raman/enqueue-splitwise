@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 import { Toaster } from "sonner";
 import { ErrorProvider } from "@/contexts/ErrorContext";
+import { UserProvider } from "@/contexts/UserContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,11 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ErrorProvider>
-          <Toaster />
-          {children}
-          <Footer />
-        </ErrorProvider>
+        <UserProvider>
+          <ErrorProvider>
+            <Toaster />
+            {children}
+            <Footer />
+          </ErrorProvider>
+        </UserProvider>
       </body>
     </html>
   );

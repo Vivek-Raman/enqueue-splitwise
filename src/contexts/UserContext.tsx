@@ -1,15 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { SplitwiseUser, SplitwiseApiResponse } from "../types/splitwise";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { SplitwiseUser, SplitwiseApiResponse } from "@/types/splitwise";
 
-interface UseSplitwiseUserReturn {
+interface UserContextType {
   user: SplitwiseUser | null;
   loading: boolean;
   refetch: () => Promise<void>;
 }
 
-export function useSplitwiseUser(): UseSplitwiseUserReturn {
+const UserContext = createContext<UserContextType | undefined>(undefined);
+
+interface UserProviderProps {
+  children: ReactNode;
+}
+
+export function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<SplitwiseUser | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -37,9 +43,17 @@ export function useSplitwiseUser(): UseSplitwiseUserReturn {
     fetchUser();
   }, []);
 
-  return {
-    user,
-    loading,
-    refetch: fetchUser,
-  };
+  return (
+    <UserContext.Provider value={{ user, loading, refetch: fetchUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+}
+
+export function useUser() {
+  const context = useContext(UserContext);
+  if (context === undefined) {
+    throw new Error("useUser must be used within a UserProvider");
+  }
+  return context;
 }

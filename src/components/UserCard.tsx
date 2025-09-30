@@ -1,13 +1,13 @@
 import { Card, CardTitle, CardContent, CardHeader } from "./ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { useSplitwiseUser } from "@/hooks";
+import { useUser } from "@/contexts/UserContext";
 import { FormEvent, useCallback } from "react";
 import { Input } from "./ui/input";
 import { useError } from "@/contexts/ErrorContext";
 
 export default function UserCard() {
-  const { loading, user, refetch } = useSplitwiseUser();
+  const { loading, user, refetch } = useUser();
   const { setError } = useError();
 
   const doLogin = useCallback(
